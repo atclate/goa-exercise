@@ -8,20 +8,26 @@ import (
 // SourceMedia is the media type used to render source.
 var SourceMedia = MediaType("application/vnd.source+json", func() {
 	Description("SourceMedia is the media type used to render sources")
-	TypeName("SourceMedia ")
+	TypeName("SourceMedia")
 	Reference(SourcePayload)
 
 	Attributes(func() {
 		Attribute("id", Integer, "Source identifier")
 		Attribute("href", String, "Source href")
 		Attribute("name")
+		Attribute("caches", CollectionOf(CacheMedia), "Caches")
 		Required("id", "href", "name")
+	})
+
+	Links(func() {
+		Link("caches")
 	})
 
 	View("default", func() {
 		Attribute("id")
 		Attribute("href")
 		Attribute("name")
+		Attribute("caches")
 	})
 
 	View("link", func() {

@@ -6,7 +6,7 @@ import (
 )
 
 // CacheMedia is the media type used to render caches.
-var CacheMedia = MediaType("application/vnd.caches+json", func() {
+var CacheMedia = MediaType("application/vnd.cache+json", func() {
 	Description("CacheMedia is the media type used to render caches")
 	TypeName("CacheMedia")
 	Reference(CachePayload)
@@ -16,10 +16,12 @@ var CacheMedia = MediaType("application/vnd.caches+json", func() {
 		Attribute("href", String, "Cache href")
 		Attribute("name")
 		Attribute("description")
-		Attribute("source", SourceMedia, "Source being cached")
+		//Attribute("source", SourceMedia, "Source being cached")
+		Attribute("source", Integer, "Id of Source")
 		Attribute("text", String, "contents in source")
-		Link("source")
-		Required("id", "href", "name", "source", "text")
+		//Link("source")
+		//Required("id", "href", "name", "source", "text")
+		Required("id", "href", "name", "text")
 	})
 
 	View("default", func() {
@@ -27,15 +29,20 @@ var CacheMedia = MediaType("application/vnd.caches+json", func() {
 		Attribute("href")
 		Attribute("name")
 		Attribute("description")
-		Attribute("source")
+		//Attribute("source")
 		Attribute("text")
 	})
 
 	View("extended", func() {
 		Attribute("id")
 		Attribute("href")
-		Attribute("source")
+		//Attribute("source")
 		Attribute("name")
+	})
+
+	View("link", func() {
+		Attribute("id")
+		Attribute("href")
 	})
 })
 
