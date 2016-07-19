@@ -1,9 +1,11 @@
 
 build: model
+		#../../goadesign/goa/goagen/goagen bootstrap -d github.com/atclate/goa-exercise/design
 		goagen bootstrap -d github.com/atclate/goa-exercise/design
 		go build
 
 model:
+		#../../goadesign/goa/goagen/goagen --design=github.com/atclate/goa-exercise/design gen --pkg-path=github.com/atclate/gorma
 		goagen --design=github.com/atclate/goa-exercise/design gen --pkg-path=github.com/goadesign/gorma
 
 clean:

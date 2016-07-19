@@ -15,13 +15,15 @@ var SourceMedia = MediaType("application/vnd.source+json", func() {
 		Attribute("id", Integer, "Source identifier")
 		Attribute("href", String, "Source href")
 		Attribute("name")
-		Attribute("caches", CollectionOf(CacheMedia), "Caches")
+		Attribute("caches", CollectionOf(Cache))
 		Required("id", "href", "name")
 	})
 
-	Links(func() {
-		Link("caches")
-	})
+	/*
+		Links(func() {
+			Link("caches")
+		})
+	*/
 
 	View("default", func() {
 		Attribute("id")
@@ -33,6 +35,7 @@ var SourceMedia = MediaType("application/vnd.source+json", func() {
 	View("link", func() {
 		Attribute("id")
 		Attribute("href")
+		Attribute("caches")
 	})
 	/*
 		View("extended", func() {

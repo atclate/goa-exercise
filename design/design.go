@@ -1,6 +1,7 @@
 package design
 
 import (
+	"bitbucket.org/pkg/inflect"
 	. "github.com/atclate/goa-exercise/design/public"
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
@@ -19,6 +20,8 @@ const (
 
 // This block defines the global properties of the service API.
 var _ = API("GoWorkshop", func() {
+	inflect.AddIrregular("cache", "caches")
+	inflect.AddIrregular("Cache", "Caches")
 
 	// General metadata about the service
 	Title("The Universal Workshop Service")
@@ -125,7 +128,7 @@ var _ = Resource("cache", func() {
 					Pattern("/caches/[0-9]+")
 				})
 			})
-			Media(CacheMedia)
+			Media(Cache)
 		})
 		Response(BadRequest, ErrorMedia)
 	})
@@ -140,7 +143,7 @@ var _ = Resource("cache", func() {
 			})
 		})
 		Payload(CachePatchPayload)
-		Response(OK, CacheMedia)
+		Response(OK, Cache)
 		Response(BadRequest, ErrorMedia)
 	})
 
@@ -156,7 +159,7 @@ var _ = Resource("cache", func() {
 				Enum("default", "extended")
 			})
 		})
-		Response(OK, CacheMedia)
+		Response(OK, Cache)
 		Response(BadRequest, ErrorMedia)
 		Response(NotFound)
 	})
@@ -170,7 +173,7 @@ var _ = Resource("cache", func() {
 				Minimum(1)
 			})
 		})
-		Response(OK, CollectionOf(CacheMedia))
+		Response(OK, CollectionOf(Cache))
 	})
 })
 

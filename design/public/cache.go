@@ -5,10 +5,10 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-// CacheMedia is the media type used to render caches.
-var CacheMedia = MediaType("application/vnd.cache+json", func() {
-	Description("CacheMedia is the media type used to render caches")
-	TypeName("CacheMedia")
+// Cache is the media type used to render caches.
+var Cache = MediaType("application/vnd.cache+json", func() {
+	Description("Cache is the media type used to render caches")
+	TypeName("Cache")
 	Reference(CachePayload)
 
 	Attributes(func() {
