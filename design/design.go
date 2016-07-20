@@ -105,10 +105,30 @@ var _ = Resource("source", func() {
 				Minimum(1)
 			})
 		})
+		Response(OK)
 		Response(NoContent)
 		Response(NotFound)
 	})
 
+	// List sources
+	Action("list", func() {
+		Description("List all sources")
+		Routing(GET("/"))
+		Response(OK, CollectionOf(SourceMedia))
+	})
+
+	// List sources
+	Action("caches", func() {
+		Description("List all caches by source")
+		Routing(GET("/:id/caches"))
+		Params(func() {
+			Param("id", Integer, "Filter by source", func() {
+				Minimum(1)
+			})
+		})
+		Response(OK, CollectionOf(Cache))
+		Response(NotFound)
+	})
 })
 
 // This block defines the "cache" resource endpoints.
@@ -162,18 +182,6 @@ var _ = Resource("cache", func() {
 		Response(OK, Cache)
 		Response(BadRequest, ErrorMedia)
 		Response(NotFound)
-	})
-
-	// List caches
-	Action("list", func() {
-		Description("List all caches")
-		Routing(GET("/"))
-		Params(func() {
-			Param("source_id", Integer, "Filter by source", func() {
-				Minimum(1)
-			})
-		})
-		Response(OK, CollectionOf(Cache))
 	})
 })
 
