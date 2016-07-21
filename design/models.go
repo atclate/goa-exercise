@@ -33,7 +33,7 @@ var _ = StorageGroup("StorageGroup", func() {
 				Payload("cache", "create")
 				Payload("cache", "update")
 			})
-			RendersTo(public.Cache)
+			RendersTo(public.CacheMedia)
 			Description("Cache Model")
 			BelongsTo("Source")
 			Field("id", gorma.Integer, func() {

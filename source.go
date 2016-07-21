@@ -5,6 +5,7 @@ import (
 	"github.com/atclate/goa-exercise/models"
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
+	"fmt"
 )
 
 // SourceController implements the source resource.
@@ -22,15 +23,10 @@ func (c *SourceController) Caches(ctx *app.CachesSourceContext) error {
 	// SourceController_Caches: start_implement
 
 	// Put your logic here
-	source, err := sdb.OneSourceMedia(ctx.Context, ctx.ID)
-	if err == gorm.ErrRecordNotFound {
-		return ctx.NotFound()
-	} else if err != nil {
-		return c.Service.Send(ctx, 500, err.Error)
-	}
+	cacheExtended := cdb.ListCacheExtended(ctx.Context, ctx.ID)
 
 	// SourceController_Show: end_implement
-	return ctx.OK(source.Caches)
+	return ctx.OKExtended(cacheExtended)
 }
 
 // Create runs the create action.
@@ -68,8 +64,17 @@ func (c *SourceController) List(ctx *app.ListSourceContext) error {
 	// Put your logic here
 	source := sdb.ListSourceMedia(ctx.Context)
 
-	// SourceController_Show: end_implement
-	return ctx.OK(source)
+	var res app.SourceMediaLinkCollection
+	for _, s := range source {
+		res = append(res, &app.SourceMediaLink{
+			Href: fmt.Sprintf("/api/sources/%v", s.ID),
+			ID: s.ID,
+			Name: s.Name,
+		})
+	}
+
+	// SourceController_List: end_implement
+	return ctx.OK(res)
 }
 
 // Show runs the show action.
@@ -82,6 +87,10 @@ func (c *SourceController) Show(ctx *app.ShowSourceContext) error {
 		return ctx.NotFound()
 	} else if err != nil {
 		return c.Service.Send(ctx, 500, err.Error)
+	}
+
+	for _, c := range source.Caches {
+		c.Href = fmt.Sprintf("/api/caches/%v", c.ID)
 	}
 
 	// SourceController_Show: end_implement

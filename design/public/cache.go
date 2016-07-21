@@ -5,8 +5,8 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-// Cache is the media type used to render caches.
-var Cache = MediaType("application/vnd.cache+json", func() {
+// CacheMedia is the media type used to render caches.
+var CacheMedia = MediaType("application/vnd.cache+json", func() {
 	Description("Cache is the media type used to render caches")
 	TypeName("Cache")
 	Reference(CachePayload)
@@ -16,33 +16,30 @@ var Cache = MediaType("application/vnd.cache+json", func() {
 		Attribute("href", String, "Cache href")
 		Attribute("name")
 		Attribute("description")
-		//Attribute("source", SourceMedia, "Source being cached")
-		Attribute("source", Integer, "Id of Source")
+		Attribute("source", SourceMediaLink, "Id of Source")
 		Attribute("text", String, "contents in source")
-		//Link("source")
-		//Required("id", "href", "name", "source", "text")
 		Required("id", "href", "name", "text")
-	})
-
-	View("default", func() {
-		Attribute("id")
-		Attribute("href")
-		Attribute("name")
-		Attribute("description")
-		//Attribute("source")
-		Attribute("text")
-	})
-
-	View("extended", func() {
-		Attribute("id")
-		Attribute("href")
-		//Attribute("source")
-		Attribute("name")
 	})
 
 	View("link", func() {
 		Attribute("id")
+		Attribute("name")
+		Attribute("description")
+		Attribute("text")
+	})
+
+	View("default", func() {
+		Attribute("id")
+		Attribute("name")
 		Attribute("href")
+	})
+
+	View("extended", func() {
+		Attribute("id")
+		Attribute("name")
+		Attribute("description")
+		Attribute("source")
+		Attribute("text")
 	})
 })
 
@@ -55,9 +52,7 @@ var CachePayload = Type("CachePayload", func() {
 	})
 	Attribute("description")
 	Attribute("text")
-	Attribute("source_href", String, "The href to the source resource that describes the source being taught", func() {
-		Pattern("/caches/[0-9]+")
-	})
+	Attribute("source_id", Integer, "Id of Source")
 	Required("name", "description")
 })
 
@@ -68,4 +63,5 @@ var CachePatchPayload = Type("CachePatchPayload", func() {
 	Attribute("text", String, "Contents for cache", func() {
 		MinLength(2)
 	})
+	Attribute("source_id", Integer, "Id of Source")
 })

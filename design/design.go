@@ -114,10 +114,10 @@ var _ = Resource("source", func() {
 	Action("list", func() {
 		Description("List all sources")
 		Routing(GET("/"))
-		Response(OK, CollectionOf(SourceMedia))
+		Response(OK, CollectionOf(SourceMediaLink))
 	})
 
-	// List sources
+	// List caches by source
 	Action("caches", func() {
 		Description("List all caches by source")
 		Routing(GET("/:id/caches"))
@@ -126,7 +126,7 @@ var _ = Resource("source", func() {
 				Minimum(1)
 			})
 		})
-		Response(OK, CollectionOf(Cache))
+		Response(OK, CollectionOf(CacheMedia))
 		Response(NotFound)
 	})
 })
@@ -148,7 +148,7 @@ var _ = Resource("cache", func() {
 					Pattern("/caches/[0-9]+")
 				})
 			})
-			Media(Cache)
+			Media(CacheMedia)
 		})
 		Response(BadRequest, ErrorMedia)
 	})
@@ -163,7 +163,7 @@ var _ = Resource("cache", func() {
 			})
 		})
 		Payload(CachePatchPayload)
-		Response(OK, Cache)
+		Response(OK, CacheMedia)
 		Response(BadRequest, ErrorMedia)
 	})
 
@@ -175,11 +175,8 @@ var _ = Resource("cache", func() {
 			Param("id", Integer, "The cache ID", func() {
 				Minimum(1)
 			})
-			Param("view", String, "The view used to render the cache", func() {
-				Enum("default", "extended")
-			})
 		})
-		Response(OK, Cache)
+		Response(OK, CacheMedia)
 		Response(BadRequest, ErrorMedia)
 		Response(NotFound)
 	})
