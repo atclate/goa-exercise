@@ -1,0 +1,100 @@
+GOA
+Building APIs in Go
+14:40 3 Aug 2016
+Tags: golang, http, APIs, GOA, GORMA
+
+Andrew Cheung
+Sr. Software Engineer, YP
+ac1493@yp.com
+https://github.com/atclate
+
+* What is GOA
+
+Design First (using DSL)
+Code Generation
+swagger.io
+cli tools (cobra)
+
+* GOA DSL (API)
+
+design.go
+.code samples/design.go /START OMIT/,/END OMIT/
+ ...
+.code samples/design.go /START CONT OMIT/,/END CONT OMIT/
+#.caption _Gopher_ by [[https://github.com/atclate][Andrew Cheung]]
+
+* GOA DSL (Resource)
+
+design.go
+.code samples/design.go /START RESOURCES OMIT/,/END RESOURCES OMIT/
+#.caption _Gopher_ by [[https://github.com/atclate][Andrew Cheung]]
+
+* GORMA
+
+DSL for ORM code Generation
+modeled after ActiveRecord
+opinionated (uses GORM)
+
+* GORMA (database connection)
+
+* GORMA (models)
+
+*models.go*
+
+Storage group:
+.code samples/models.go /START OMIT/,/END OMIT/
+cache:
+.code samples/models.go /START CACHE OMIT/,/END CACHE OMIT/
+
+* GORMA (models continued)
+cache continued:
+.code samples/models.go /START CACHE CONT OMIT/,/END CACHE CONT OMIT/
+
+* Demo - generation
+.image images/gatt.jpg
+
+: Okay, now lets do this.
+: go get github.com/atclate/goa-exercise
+: cd $GOPATH/src/github.com/atclate/goa-exercise
+: ls (design.go, models.go (for API), public/<models>.go (for Models))
+: goagen bootstrap -d github.com/atclate/goa-exercise/design (app, public.go, tools, swagger, (not overwriting main.go, sources.go, cache.go))
+: goagen --design=github.com/atclate/goa-exercise/design gen --pkg-path=github.com/goadesign/gorma
+
+* Lets start it up
+
+ go build
+ ./goa-exercise
+
+* swagger.io
+
+.link http://localhost:8080/swagger.json
+
+* Let's Design the GoWorkshop Service
+
+The GoWorkshop service lets users manage courses and registrations.
+Use Swagger editor to design the service:
+
+- online:
+
+.link http://editor.swagger.io/
+
+- using docker:
+
+    docker run -p 80:8080 swaggerapi/swagger-editor
+
+then
+
+    open http://127.0.0.1:8080/#/
+
+or
+
+    open http://172.17.0.2:8080/#/
+
+* cli tools
+
+: cd tool/goworkshop-cli
+: go build
+: ./goworkshop-cli list source
+: ./goworkshop-cli show source --id 1 --pp
+: ./goworkshop-cli create cache --payload "{\"description\": \"desc\", \"name\": \"cache_two\", \"source_id\": 1, \"text\": \"actual data\"}"
+: ./goworkshop-cli show source --id 1 --pp
